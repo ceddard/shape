@@ -1,4 +1,6 @@
 import pandas as pd
+import dask.dataframe as dd
+from pyspark.sql import SparkSession
 from sklearn.decomposition import PCA
 from sklearn.svm import OneClassSVM, LinearSVC, NuSVR
 import datetime
@@ -7,16 +9,24 @@ from sklearn.pipeline import Pipeline
 import pickle
 import numpy as np
 import json
+import mlflow
+import mlflow.sklearn
+from kafka import KafkaProducer
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 data_file_path = 'data/dataset.parquet'
 
+spark = SparkSession.builder.appName("JobTestChallenge").getOrCreate()
+
+KAFKA_TOPIC = 'mlflow_logs'
+KAFKA_SERVER = 'localhost:9092'
+producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
+
 # Load any asset
 def load(type, **kwargs):
     if (type == 'data'):
-        # Implement a method to read the data file and return a dataframe using numpy
-        df = pd.read_parquet(data_file_path)
-        return df.to_numpy()
+        df = dd.read_parquet(data_file_path) # usando dask
+        return df.compute().to_numpy()
     if (type == 'model'):
         with open('artifacts/pipeline.jsonc', 'r') as f:
             str_json = '\n'.join(f.readlines()[3:])
@@ -28,10 +38,12 @@ def load(type, **kwargs):
     else:
         return None
 
-def _log_failure( e ) :
+def _log_failure(e):
     LOG_DUMP_PATH = 'logs/failure.log'
+    log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
     with open(LOG_DUMP_PATH, 'a') as fLog:
-        fLog.write(f'{datetime.datetime.now()} - Failure: %s\n' % (str(e)))
+        fLog.write(log_message)
+    producer.send(KAFKA_TOPIC, log_message.encode('utf-8'))
 
 def load_pipeline(file_path: str) -> Pipeline:
     #implement a method to read the pipeline file and return a pipeline with the steps in sklearn
@@ -63,6 +75,8 @@ def score():
     This function should score the model on the test data and return the score.
     """
     try:
+        mlflow.start_run()
+        
         m = load('model')
         data = load('data')
         pipe = load_pipeline(pipeline_file_path)
@@ -79,6 +93,15 @@ def score():
         unique, counts = np.unique(predictions, return_counts=True)
         result = dict(zip(unique, counts))
 
+        mlflow.log_param("data_shape", data.shape)
+        mlflow.log_param("transformed_data_shape", tr_data.shape)
+        mlflow.log_metric("unique_predictions", len(unique))
+        
+        mlflow.sklearn.log_model(m, "model")
+
+        success_message = f'{datetime.datetime.now()} - Success: Model scored successfully\n'
+        producer.send(KAFKA_TOPIC, success_message.encode('utf-8'))# Log successo para Kafka
+
         return {
             "predictions": predictions,
             "summary": result
@@ -87,6 +110,8 @@ def score():
         print(e)
         _log_failure(e)
         return None
+    finally:
+        mlflow.end_run()
 
 if __name__ == '__main__':
     result = score()
