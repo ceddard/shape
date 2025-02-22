@@ -1,6 +1,6 @@
 import numpy as np
 from loader.data_loader import load
-from pipeline.pipeline_builder import pipeline_builder
+from src.pipeline.builder import pipeline_builder
 from logger import logger
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
@@ -15,7 +15,7 @@ def main():
         logger.info('Loading data...')
         data = load('data')
         logger.info('Loading pipeline...')
-        pipe = load_pipeline(pipeline_file_path)
+        pipe = pipeline_builder(pipeline_file_path)
 
         data = data[:, [0, 1, 2]]  # Assuming 'vibration_x', 'vibration_y', 'vibration_z' are the first three columns
         logger.info('Transforming data...')
@@ -39,5 +39,4 @@ def main():
         }
     except Exception as e:
         print(e)
-        _log_failure(e)
         return None
