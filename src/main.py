@@ -1,11 +1,11 @@
 import numpy as np
-from .data_loader import load
-from .pipeline_loader import load_pipeline
-from .logger import _log_failure, logger
+from loader.data_loader import load
+from pipeline.pipeline_builder import pipeline_builder
+from logger import logger
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 
-def score():
+def main():
     """
     This function should score the model on the test data and return the score.
     """

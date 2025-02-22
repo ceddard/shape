@@ -2,7 +2,7 @@ import json
 from sklearn.preprocessing import PolynomialFeatures, QuantileTransformer, StandardScaler
 from sklearn.pipeline import Pipeline
 
-def load_pipeline(file_path: str) -> Pipeline:
+def pipeline_builder(file_path: str) -> Pipeline:
     with open(file_path, 'r') as f:
         str_json = '\n'.join(f.readlines()[3:])
     
