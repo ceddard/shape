@@ -12,19 +12,19 @@ from engine.spark_engine import SparkEngine
 from traceability.provider_traceability import Traceability
 
 spark_engine = SparkEngine()  # Default
-spark = spark_engine.spark
+spark = spark_engine.spark #rever implementacao futura
 traceability = Traceability.create_traceability("mlflow")  # Default, mover no futuro
 logger = KafkaFacade()  # TODO: mover para o construtor do pacote
 
 
 def score():
     try:
-        run_id = traceability.start_run()  # TODO: modularizar para tracebality e criar excessao
-        timestamp = datetime.datetime.now().isoformat()  # TODO: modularizar para utils
+        run_id = traceability.start_run()  # TODO: modularizar para tracebality e criar excessao, ou rever implementacao futura
+        timestamp = datetime.datetime.now().isoformat()  # TODO: modularizar para utils, ou rever implementacao futura
         
         load = Load()  # TODO: mover para o construtor do pacote
         m = load.model
-        data = load.data
+        data = load.data 
         
         pipeline_context = PipelineContext(settings.PIPELINE_FILE_PATH)  # TODO: refatorar junto ao pipeline
         pipe = pipeline_context.get_pipeline()  # TODO: refatorar junto ao pipeline
@@ -39,7 +39,7 @@ def score():
 
         predictions = m.predict(tr_data)  # TODO: definir methodo para o predict
         unique, counts = np.unique(predictions, return_counts=True)
-        result = dict(zip(unique, counts))  # TODO: refatorar este arquivo
+        result = dict(zip(map(str, unique), counts))  # Convert keys to strings
 
         metrics = {  # TODO: definir funcao para metricas
             "data_shape": data.shape,
