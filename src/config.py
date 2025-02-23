@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     KAFKA_SERVER: str
     APP_NAME: str
     SPARK_UI_PORT: str
+    LOGS_DIR: str
+    METRICS_FILE_NAME: str
 
     class Config:
         env_file = ".env"

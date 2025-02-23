@@ -2,7 +2,8 @@ import mlflow
 from traceability.schema import TraceabilitySchema
 
 class MLflowTraceability(TraceabilitySchema):
-    def start_run(self):
+    @staticmethod
+    def start_run():
         try:
             mlflow.start_run()
             run_id = mlflow.active_run().info.run_id
@@ -10,9 +11,10 @@ class MLflowTraceability(TraceabilitySchema):
         except Exception as e:
             raise RuntimeError(f"Failed to start MLflow run: {str(e)}")
 
-    def end_run(self):
+    @staticmethod
+    def end_run():
         try:
-            mlflow.end_run()
+            mlflow.end_run
         except Exception as e:
             raise RuntimeError(f"Failed to end MLflow run: {str(e)}")
 
@@ -36,7 +38,8 @@ class MLflowTraceability(TraceabilitySchema):
         except Exception as e:
             raise RuntimeError(f"Failed to log MLflow model: {str(e)}")
 
-    def get_run_info(self):
+    @staticmethod
+    def get_run_info():
         try:
             run_info = {
                 "run_id": mlflow.active_run().info.run_id,

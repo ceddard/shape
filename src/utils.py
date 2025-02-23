@@ -20,7 +20,7 @@ def convert_keys(obj):
         return [convert_keys(item) for item in obj]
     return obj
 
-def save_to_postgres(run_id, timestamp, predictions, summary, input_data, mlflow_info):
+def save_to_postgres(run_id, timestamp, predictions, summary, mlflow_info):
     conn = psycopg2.connect(
         dbname="postgres",
         user="postgres",
@@ -49,3 +49,7 @@ def save_to_postgres(run_id, timestamp, predictions, summary, input_data, mlflow
     conn.commit()
     cursor.close()
     conn.close()
+
+
+def get_current_timestamp():
+    return str(datetime.datetime.now().isoformat())

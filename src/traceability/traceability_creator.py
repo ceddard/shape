@@ -9,7 +9,6 @@ class Traceability:
         #'biases': WeightsBiasesTraceability
     }
 
-    @staticmethod
     def create_traceability(traceability_type):
         try:
             return Traceability._traceability_classes[traceability_type]()
