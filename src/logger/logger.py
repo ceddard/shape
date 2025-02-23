@@ -1,5 +1,6 @@
 import datetime
 from kafka import KafkaProducer
+from config import settings
 
 class Logger:
     def log_failure(self, e):
@@ -7,10 +8,11 @@ class Logger:
 
 class KafkaLogger(Logger):
     def __init__(self):
-        self.KAFKA_TOPIC = 'pipeline_logs'
-        self.KAFKA_SERVER = 'localhost:9092'
+        self.KAFKA_TOPIC = settings.kafka_topic
+        self.KAFKA_SERVER = settings.kafka_server
         self.producer = KafkaProducer(bootstrap_servers=self.KAFKA_SERVER)
 
+    def log_failure(self, e):
         log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
         self.producer.send(self.KAFKA_TOPIC, log_message.encode('utf-8'))
 

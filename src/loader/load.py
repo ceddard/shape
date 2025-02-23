@@ -1,15 +1,16 @@
 import dask.dataframe as dd
 import pickle
 import json
+from config import settings
 
 class Load:
-    def __init__(self, data_file_path='data/dataset.parquet', model_file_path='artifacts/pipeline.jsonc'):
-        self.data_file_path = data_file_path
-        self.model_file_path = model_file_path
+    def __init__(self):
+        self.data_file_path = settings.DATA_FILE_PATH
+        self.model_file_path = settings.PIPELINE_FILE_PATH
 
     @property
-    def data(cls):
-        df = dd.read_parquet(cls.data_file_path)
+    def data(self):
+        df = dd.read_parquet(self.data_file_path)
         return df.compute().to_numpy()
 
     @property
@@ -20,5 +21,5 @@ class Load:
             return pickle.load(f)
 
     @property
-    def pipeline(cls):
+    def pipeline(self):
         raise NotImplementedError()
