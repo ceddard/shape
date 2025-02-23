@@ -14,11 +14,20 @@ import mlflow.sklearn
 from kafka import KafkaProducer
 import os
 import psycopg2
+from pyspark.ml.feature import VectorAssembler
+import time
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 data_file_path = 'data/dataset.parquet'
 
-spark = SparkSession.builder.appName("JobTestChallenge").getOrCreate()
+spark = SparkSession.builder \
+    .appName("Shape") \
+    .config("spark.ui.port", "4040") \
+    .getOrCreate()
+
+# Verificar se o Spark Context está ativo
+if not spark:
+    raise RuntimeError("Falha ao iniciar o Spark Context")
 
 KAFKA_TOPIC = 'pipeline_logs'
 KAFKA_SERVER = 'localhost:9092'
@@ -27,8 +36,10 @@ producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
 # Load any asset
 def load(type, **kwargs):
     if (type == 'data'):
-        df = dd.read_parquet(data_file_path) # usando dask
-        return df.compute().to_numpy()
+        df = spark.read.parquet(data_file_path)  # usando PySpark
+        df = df.persist()  # Persistir o DataFrame em memória
+        print("DataFrame carregado e persistido em memória")
+        return df
     if (type == 'model'):
         with open('artifacts/pipeline.jsonc', 'r') as f:
             str_json = '\n'.join(f.readlines()[3:])
@@ -136,10 +147,19 @@ def score():
         timestamp = datetime.datetime.now().isoformat()
         
         m = load('model')
-        data = load('data')
+        df = load('data')
         pipe = load_pipeline(pipeline_file_path)
 
-        data = data[:, [0, 1, 2]]  # Assuming 'vibration_x', 'vibration_y', 'vibration_z' are the first three columns
+        # Select relevant columns and convert to feature vector
+        assembler = VectorAssembler(inputCols=['vibration_x', 'vibration_y', 'vibration_z'], outputCol='features')
+        df = assembler.transform(df)
+        df = df.repartition(10)  # Particionar o DataFrame para melhorar o desempenho
+        print("DataFrame particionado")
+        
+        # Submeter job ao Spark
+        data = np.array(df.select('features').rdd.map(lambda row: row.features.toArray()).collect())
+        print("Job submetido ao Spark e dados coletados")
+
         tr_data = pipe.fit_transform(data)
 
         if (not len(tr_data)):
@@ -195,6 +215,14 @@ if __name__ == '__main__':
     if result:
         print("Predictions:", result["predictions"])
         print("Summary:", result["summary"])
+        
+    print("Spark UI disponível. Pressione Ctrl+C para sair.")
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Encerrando SparkContext...")
+        spark.stop()
 
 
 #por que tanto codigo
