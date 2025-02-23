@@ -19,7 +19,14 @@ import time
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 data_file_path = 'data/dataset.parquet'
 
-spark = SparkSession.builder.appName("JobTestChallenge").getOrCreate()
+spark = SparkSession.builder \
+    .appName("Shape") \
+    .config("spark.ui.port", "4040") \
+    .getOrCreate()
+
+# Verificar se o Spark Context está ativo
+if not spark:
+    raise RuntimeError("Falha ao iniciar o Spark Context")
 
 KAFKA_TOPIC = 'pipeline_logs'
 KAFKA_SERVER = 'localhost:9092'
