@@ -1,12 +1,24 @@
 import datetime
-import logging
+from kafka import KafkaProducer
 
-LOG_DUMP_PATH = 'logs/failure.log'
+class Logger:
+    def log_failure(self, e):
+        raise NotImplementedError()
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+class KafkaLogger(Logger):
+    def __init__(self):
+        self.KAFKA_TOPIC = 'pipeline_logs'
+        self.KAFKA_SERVER = 'localhost:9092'
+        self.producer = KafkaProducer(bootstrap_servers=self.KAFKA_SERVER)
 
-def _log_failure(e):
-    with open(LOG_DUMP_PATH, 'a') as fLog:
-        fLog.write(f'{datetime.datetime.now()} - Failure: %s\n' % (str(e)))
-    logger.error(f'Failure: {str(e)}')
+        log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
+        self.producer.send(self.KAFKA_TOPIC, log_message.encode('utf-8'))
+
+class FileLogger(Logger):
+    def __init__(self):
+        self.LOG_DUMP_PATH = 'logs/failure.log'
+
+    def log_failure(self, e):
+        log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
+        with open(self.LOG_DUMP_PATH, 'a') as fLog:
+            fLog.write(log_message)
