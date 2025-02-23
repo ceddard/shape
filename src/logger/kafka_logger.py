@@ -12,21 +12,23 @@ class KafkaFacade(Logger):
     def __send_message(self, message):
         self.producer.send(self.topic, message.encode('utf-8'))
 
-    def log_failure(self, e):
-        log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
+    def log_failure(self, **kwargs):
+        error = kwargs.get('error')
+        log_message = f'{datetime.datetime.now()} - Failure: {str(error)}\n'
         self.__send_message(log_message)
 
-    def log_run_info(self, run_id, timestamp, predictions, result, data, mlflow_info):
+    def log_run_info(self, **kwargs):
         message = {
-            "run_id": run_id,
-            "timestamp": timestamp,
-            "predictions": predictions,
-            "result": result,
-            "data": data,
-            "mlflow_info": mlflow_info
+            "run_id": kwargs.get('run_id'),
+            "timestamp": kwargs.get('timestamp'),
+            "predictions": kwargs.get('predictions'),
+            "result": kwargs.get('result'),
+            "data": kwargs.get('data'),
+            "mlflow_info": kwargs.get('mlflow_info')
         }
         self.__send_message(json.dumps(message))
 
-    def log_success(self, message):
+    def log_success(self, **kwargs):
+        message = kwargs.get('message')
         success_message = f'{datetime.datetime.now()} - Success: {message}\n'
         self.__send_message(success_message)

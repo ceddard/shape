@@ -1,4 +1,5 @@
-from pydantic import BaseSettings, ValidationError
+from pydantic import ValidationError
+from pydantic_settings import BaseSettings
 from exceptions import MissingEnvironmentVariableError
 
 class Settings(BaseSettings):
