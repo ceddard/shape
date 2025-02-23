@@ -15,6 +15,7 @@ from kafka import KafkaProducer
 import os
 import psycopg2
 import time
+from logger.logger import KafkaLogger, FileLogger
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 data_file_path = 'data/dataset.parquet'
@@ -49,11 +50,8 @@ def load(type, **kwargs):
         return None
 
 def _log_failure(e):
-    LOG_DUMP_PATH = 'logs/failure.log'
-    log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
-    with open(LOG_DUMP_PATH, 'a') as fLog:
-        fLog.write(log_message)
-    producer.send(KAFKA_TOPIC, log_message.encode('utf-8'))
+    KafkaLogger().log_failure(e)
+    FileLogger().log_failure(e)
 
 def load_pipeline(file_path: str) -> Pipeline:
     #implement a method to read the pipeline file and return a pipeline with the steps in sklearn

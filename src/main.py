@@ -4,18 +4,17 @@ import os
 import time
 import numpy as np
 import mlflow
-from kafka import KafkaProducer
 from loader.load import Load
 from pipeline.builder import PipelineContext
-from logger.logger import KafkaLogger, FileLogger
+from logger.kafka_logger import KafkaFacade
 from utils import save_metrics_to_json, save_to_postgres
 from config import settings
 from engine.spark_engine import SparkEngine
 
-spark_engine = SparkEngine() # TODO: mover para o construtor do pacote
+spark_engine = SparkEngine()  # TODO: mover para o construtor do pacote
 spark = spark_engine.spark
 
-producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)  # TODO: modularizar para instanciar junto ao kafka
+logger = KafkaFacade()  # TODO: mover para o construtor do pacote
 
 def score():
     try:
@@ -57,8 +56,8 @@ def score():
         transformed_input_example = pipe.transform(input_example)  # TODO: modularizar para tracebality
         mlflow.sklearn.log_model(m, "model", input_example=transformed_input_example)  # deveria ser async??
 
-        success_message = f'{datetime.datetime.now()} - Success: Model scored successfully\n'  # TODO: modularizar para logger
-        producer.send(settings.KAFKA_TOPIC, success_message.encode('utf-8'))  # TODO: modularizar para logger
+        success_message = 'Model scored successfully'  # TODO: modularizar para logger
+        logger.log_success(message=success_message)  # TODO: modularizar para logger
 
         metrics_file_path = os.path.join('logs', 'metrics.json')  # TODO: definir funcao para metricas
         save_metrics_to_json(metrics, metrics_file_path)  # TODO: definir funcao para metricas
@@ -71,14 +70,15 @@ def score():
         }
         save_to_postgres(run_id, timestamp, predictions.tolist(), result, data.tolist(), mlflow_info)  # TODO: Definir metodo para salvar no postgres
 
+        logger.log_run_info(run_id=run_id, timestamp=timestamp, predictions=predictions.tolist(), result=result, data=data.tolist(), mlflow_info=mlflow_info)  # Log run info
+
         return {  # TODO: retorno esperado
             "predictions": predictions,
             "summary": result
         }
-    except Exception as e:
-        print(e)
-        KafkaLogger().log_failure(e)
-        FileLogger().log_failure(e)
+    except Exception as error:
+        print(error)
+        logger.log_failure(error)
         return None
     finally:
         mlflow.end_run()

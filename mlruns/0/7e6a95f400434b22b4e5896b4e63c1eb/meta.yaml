@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/7e6a95f400434b22b4e5896b4e63c1eb/artifacts
+end_time: 1740321113758
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 7e6a95f400434b22b4e5896b4e63c1eb
+run_name: melodic-wolf-300
+run_uuid: 7e6a95f400434b22b4e5896b4e63c1eb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740321089409
+status: 3
+tags: []
+user_id: cadu

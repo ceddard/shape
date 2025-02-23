@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/5e9b15ec69d041eabf8573e6c462b4ab/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 5e9b15ec69d041eabf8573e6c462b4ab
+run_name: sassy-panda-671
+run_uuid: 5e9b15ec69d041eabf8573e6c462b4ab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740321917178
+status: 1
+tags: []
+user_id: cadu

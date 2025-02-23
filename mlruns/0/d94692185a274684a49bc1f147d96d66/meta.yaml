@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/d94692185a274684a49bc1f147d96d66/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d94692185a274684a49bc1f147d96d66
+run_name: lyrical-ray-77
+run_uuid: d94692185a274684a49bc1f147d96d66
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740321309527
+status: 1
+tags: []
+user_id: cadu
