@@ -14,6 +14,7 @@ import mlflow.sklearn
 from kafka import KafkaProducer
 import os
 import psycopg2
+import time
 
 pipeline_file_path = 'artifacts/pipeline.jsonc'
 data_file_path = 'data/dataset.parquet'
@@ -195,6 +196,14 @@ if __name__ == '__main__':
     if result:
         print("Predictions:", result["predictions"])
         print("Summary:", result["summary"])
+    
+    print("Spark UI disponível. Pressione Ctrl+C para sair.")
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Encerrando SparkContext...")
+        spark.stop()
 
 
 #por que tanto codigo
