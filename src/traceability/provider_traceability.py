@@ -1,4 +1,4 @@
-from traceability.implementations.mlflow import MLflowTraceability
+from traceability.services.mlflow import MLflowTraceability
 # from traceability.implementations.dvc import DVCTraceability  # descomente quando DVCTraceability for implementado
 # from traceability.implementations.biases import BiasesTraceability  # descomente quando BiasesTraceability for implementado
 
