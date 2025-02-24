@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/3521d2219ba2411ea8b906a7c5ff8575/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 3521d2219ba2411ea8b906a7c5ff8575
+run_name: masked-gull-103
+run_uuid: 3521d2219ba2411ea8b906a7c5ff8575
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740371567209
+status: 1
+tags: []
+user_id: cadu

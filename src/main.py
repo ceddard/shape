@@ -8,6 +8,7 @@ from traceability import traceability
 from pipeline.pipeline import PipelineHandler
 from traceability.traceability_recorder import TraceabilityLogger
 from exceptions import PipelineFailed
+from config import settings
 
 
 def score():
@@ -27,13 +28,13 @@ def score():
 
         traceability_info = traceability.get_run_info()
 
-        postgres_saver.save_to_postgres(run_id, timestamp, predictions.tolist(), result, data.tolist(), traceability_info)
+        postgres_saver.save_to_postgres(run_id, timestamp, predictions.tolist(), result, data.collect(), traceability_info)
         logger.log_run_info(
             run_id=run_id,
             timestamp=timestamp,
             predictions=Converter.convert_keys(predictions.tolist()),
             result=Converter.convert_keys(result),
-            data=Converter.convert_keys(data.tolist()),
+            data=Converter.convert_keys(data.collect()),
             mlflow_info=Converter.convert_keys(traceability_info)
         )
 

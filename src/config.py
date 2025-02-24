@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_HOST: str
     DB_PORT: str
+    PIPELINE_FRAMEWORK: str
 
 
     class Config:

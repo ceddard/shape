@@ -7,7 +7,8 @@ from pyspark.ml.feature import VectorAssembler
 class PipelineHandler:
     def __init__(self):
         self.load = Load()
-        self.pipeline_context = PipelineBuilder(settings.PIPELINE_FILE_PATH, framework='sklearn') #TODO: substituir para escolher o framework do pipe no futuro
+        self.framework = settings.PIPELINE_FRAMEWORK
+        self.pipeline_context = PipelineBuilder(settings.PIPELINE_FILE_PATH, framework=self.framework) 
         self.pipeline = self.pipeline_context.create_pipeline_strategy()
 
     def process_data(self):

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/36083dc9f4744c1385d725c464f440a5/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 36083dc9f4744c1385d725c464f440a5
+run_name: clumsy-bug-333
+run_uuid: 36083dc9f4744c1385d725c464f440a5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740375501525
+status: 1
+tags: []
+user_id: cadu

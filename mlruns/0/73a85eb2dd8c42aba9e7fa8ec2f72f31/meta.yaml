@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/73a85eb2dd8c42aba9e7fa8ec2f72f31/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 73a85eb2dd8c42aba9e7fa8ec2f72f31
+run_name: magnificent-gnu-380
+run_uuid: 73a85eb2dd8c42aba9e7fa8ec2f72f31
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740372464363
+status: 1
+tags: []
+user_id: cadu

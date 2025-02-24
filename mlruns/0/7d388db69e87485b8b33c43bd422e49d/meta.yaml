@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/7d388db69e87485b8b33c43bd422e49d/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 7d388db69e87485b8b33c43bd422e49d
+run_name: vaunted-skink-423
+run_uuid: 7d388db69e87485b8b33c43bd422e49d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740371750299
+status: 1
+tags: []
+user_id: cadu

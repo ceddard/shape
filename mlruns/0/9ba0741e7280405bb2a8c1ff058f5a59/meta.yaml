@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/9ba0741e7280405bb2a8c1ff058f5a59/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9ba0741e7280405bb2a8c1ff058f5a59
+run_name: clean-mare-974
+run_uuid: 9ba0741e7280405bb2a8c1ff058f5a59
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740372811388
+status: 1
+tags: []
+user_id: cadu

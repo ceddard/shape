@@ -1,0 +1,15 @@
+artifact_uri: file:///home/cadu/Desktop/Dev/shape/mlruns/0/5eaf787270d74ad89dbb0a12fa06e7f3/artifacts
+end_time: 1740375211232
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 5eaf787270d74ad89dbb0a12fa06e7f3
+run_name: victorious-crow-259
+run_uuid: 5eaf787270d74ad89dbb0a12fa06e7f3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740375084771
+status: 3
+tags: []
+user_id: cadu
