@@ -11,6 +11,14 @@ from exceptions import PipelineFailed
 
 
 def score() -> dict:
+    """
+    Score the model and save the results to the database.
+    
+    in future this function will be replaced by a pipeline that will be responsible for the entire process of scoring the model.
+    this function is just a temporary solution to demonstrate the use of the pipeline.
+    docker is not yet configured to run the pipeline, so this function is being used to demonstrate the use of the pipeline.
+    in future this function can be triggered by another pipeline or a cron job, like control-m, for example.
+    """
     try:
         run_id: str = traceability.start_run()
         timestamp: str = get_current_timestamp()
@@ -60,11 +68,3 @@ def score() -> dict:
 if __name__ == "__main__":
     result: dict = score()
     sys.stdout.write(str(result))
-
-    # print("Spark UI disponível. Pressione Ctrl+C para sair.")
-    # try:
-    #    while True:
-    #        time.sleep(1)
-    # except KeyboardInterrupt:
-    #    print("Encerrando SparkContext...")
-    #    spark_engine.stop_spark_session()
