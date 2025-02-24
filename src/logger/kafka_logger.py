@@ -3,7 +3,7 @@ from kafka import KafkaProducer
 from config import settings
 import json
 from logger.schema import Logger
-from utils import convert_keys  # Import the convert_keys function
+from utils import Converter
 
 class Logger(Logger):
     def __init__(self):
@@ -27,7 +27,7 @@ class Logger(Logger):
             "data": kwargs.get('data'),
             "mlflow_info": kwargs.get('mlflow_info')
         }
-        self.__send_message(json.dumps(convert_keys(message)))  # Use convert_keys here
+        self.__send_message(json.dumps(Converter.convert_keys(message)))  # Use convert_keys here
 
     def log_success(self, **kwargs):
         message = kwargs.get('message')

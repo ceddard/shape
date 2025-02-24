@@ -1,8 +1,8 @@
 import os
 import sys
 from logger.kafka_logger import Logger
-from utils import convert_keys, get_current_timestamp
-from database.postgres import Postgres  # Import the new class
+from utils import get_current_timestamp, Converter
+from database import postgres_saver  # Import the new class
 from database.json import save_metrics_to_json
 from engine.spark_engine import SparkEngine
 from traceability.traceability_creator import Traceability
@@ -14,7 +14,6 @@ spark_engine = SparkEngine()  # Default
 spark = spark_engine.spark #rever implementacao futura
 traceability = Traceability.create_traceability("mlflow")  # Default, mover no futuro
 logger = Logger()  # TODO: mover para o construtor do pacote
-postgres_saver = Postgres(dbname="postgres", user="postgres", password="123", host="localhost", port="5432")  # Create an instance of PostgresSaver
 
 def score():
     try:
@@ -38,13 +37,13 @@ def score():
         logger.log_run_info( #TODO: verificar conversao.
             run_id=run_id,
             timestamp=timestamp,
-            predictions=convert_keys(predictions.tolist()),
-            result=convert_keys(result),
-            data=convert_keys(data.tolist()),
-            mlflow_info=convert_keys(traceability_info)
+            predictions=Converter.convert_keys(predictions.tolist()),
+            result=Converter.convert_keys(result),
+            data=Converter.convert_keys(data.tolist()),
+            mlflow_info=Converter.convert_keys(traceability_info)
         )
 
-        return { # retornar uma matriz com valor da previsao para aquele campo do dataframe
+        return {
             "predictions": predictions,
             "summary": result
         }

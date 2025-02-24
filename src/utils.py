@@ -1,18 +1,43 @@
 import datetime
 import numpy as np
 
-def convert_keys(obj):
-    if isinstance(obj, np.generic):
+class Converter:
+    @staticmethod
+    def convert_np_generic(obj):
         return obj.item()
-    if isinstance(obj, (datetime.datetime, datetime.date)):
+
+    @staticmethod
+    def convert_datetime(obj):
         return obj.isoformat()
-    if isinstance(obj, (set, tuple)):
+
+    @staticmethod
+    def convert_set_tuple(obj):
         return list(obj)
-    if isinstance(obj, dict):
-        return {str(k): convert_keys(v) for k, v in obj.items()}
-    if isinstance(obj, list):
-        return [convert_keys(item) for item in obj]
-    return obj
+
+    @staticmethod
+    def convert_dict(obj):
+        return {str(k): Converter.convert_keys(v) for k, v in obj.items()}
+
+    @staticmethod
+    def convert_list(obj):
+        return [Converter.convert_keys(item) for item in obj]
+
+    dispatch_table = {
+        np.generic: convert_np_generic,
+        datetime.datetime: convert_datetime,
+        datetime.date: convert_datetime,
+        set: convert_set_tuple,
+        tuple: convert_set_tuple,
+        dict: convert_dict,
+        list: convert_list
+    }
+
+    @staticmethod
+    def convert_keys(obj):
+        for key, func in Converter.dispatch_table.items():
+            if isinstance(obj, key):
+                return func(obj)
+        return obj
 
 
 def get_current_timestamp():

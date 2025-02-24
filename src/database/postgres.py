@@ -1,6 +1,6 @@
 import json
 import psycopg2
-from utils import convert_keys
+from utils import Converter
 
 class Postgres:
     def __init__(self, dbname, user, password, host, port):
@@ -20,8 +20,8 @@ class Postgres:
         )
         cursor = conn.cursor()
         
-        summary_conv = convert_keys(summary)
-        mlflow_info_conv = convert_keys(mlflow_info)
+        summary_conv = Converter.convert_keys(summary)
+        mlflow_info_conv = Converter.convert_keys(mlflow_info)
         log_info_conv = "1" if log_info else "0"
 
         predictions_json = json.dumps(predictions)
