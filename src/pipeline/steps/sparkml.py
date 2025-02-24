@@ -2,9 +2,11 @@ from pyspark.ml.feature import PolynomialExpansion, QuantileDiscretizer, Standar
 from pipeline.steps.schemas import StepStrategy
 from pyspark.ml.pipeline import PipelineModel
 
+
 class ReduceDimStrategy(StepStrategy):
     def apply(self, step_config: dict) -> PipelineModel:
         return PolynomialExpansion(**step_config["PolynomialFeatures"])
+
 
 class QTransfStrategy(StepStrategy):
     def apply(self, step_config: dict) -> PipelineModel:
@@ -16,9 +18,11 @@ class QTransfStrategy(StepStrategy):
         quantile_config.pop("output_distribution", None)
         return QuantileDiscretizer(**quantile_config)
 
+
 class PolyFeatureStrategy(StepStrategy):
     def apply(self, step_config: dict) -> PipelineModel:
         return PolynomialExpansion(**step_config["PolynomialFeatures"])
+
 
 class StdScalerStrategy(StepStrategy):
     def apply(self, step_config: dict) -> PipelineModel:

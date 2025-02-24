@@ -2,10 +2,11 @@ from pyspark.sql import SparkSession
 from exceptions import SparkInitializationError
 from config import settings
 
+
 class SparkEngine:
     _instance = None
 
-    def __new__(cls) -> 'SparkEngine':
+    def __new__(cls) -> "SparkEngine":
         if cls._instance is None:
             cls._instance = super(SparkEngine, cls).__new__(cls)
             cls._instance._spark = None
@@ -23,14 +24,17 @@ class SparkEngine:
 
     def create_spark_session(self) -> SparkSession:
         try:
-            spark = SparkSession.builder \
-                .appName(self.app_name) \
-                .config("spark.ui.port", self.ui_port) \
+            spark = (
+                SparkSession.builder.appName(self.app_name)
+                .config("spark.ui.port", self.ui_port)
                 .getOrCreate()
+            )
             if not spark:
                 raise SparkInitializationError("Failed to initialize Spark Session")
         except Exception as e:
-            raise SparkInitializationError(f"Error initializing Spark Session: {str(e)}")
+            raise SparkInitializationError(
+                f"Error initializing Spark Session: {str(e)}"
+            )
         return spark
 
     def stop_spark_session(self) -> None:

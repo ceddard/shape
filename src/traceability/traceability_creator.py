@@ -1,11 +1,13 @@
 from traceability.services.mlflow import MLflowTraceability
+
 # from traceability.implementations.dvc import DVCTraceability  # descomente quando DVCTraceability for implementado
 # from traceability.implementations.biases import BiasesTraceability  # descomente quando BiasesTraceability for implementado
 from exceptions import UnknownTraceabilityTypeError, TraceabilityNotImplementedError
 
+
 class Traceability:
     _traceability_classes = {
-        'mlflow': MLflowTraceability,
+        "mlflow": MLflowTraceability,
         #'dvc': DVCTraceability,
         #'biases': WeightsBiasesTraceability
     }

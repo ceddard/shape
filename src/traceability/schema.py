@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class TraceabilitySchema(ABC):
     @abstractmethod
     def start_run(self):

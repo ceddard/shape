@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class LogSchema(ABC):
     @abstractmethod
     def log_failure(self, **kwargs):

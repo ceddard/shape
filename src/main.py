@@ -14,30 +14,41 @@ def score() -> dict:
     try:
         run_id: str = traceability.start_run()
         timestamp: str = get_current_timestamp()
-        
+
         pipeline_handler: PipelineHandler = PipelineHandler()
-        predictions, metrics, result, data = pipeline_handler.get_predictions_and_metrics()
+        predictions, metrics, result, data = (
+            pipeline_handler.get_predictions_and_metrics()
+        )
 
-        TraceabilityLogger.log_traceability_info(traceability, pipeline_handler, metrics, data)
+        TraceabilityLogger.log_traceability_info(
+            traceability, pipeline_handler, metrics, data
+        )
 
-        logger.log_success(message='Model scored successfully')
+        logger.log_success(message="Model scored successfully")
 
-        metrics_file_path: str = os.path.join('logs', 'metrics.json')
+        metrics_file_path: str = os.path.join("logs", "metrics.json")
         save_metrics_to_json(metrics, metrics_file_path)
 
         traceability_info: dict = traceability.get_run_info()
 
-        postgres_saver.save_to_postgres(run_id, timestamp, predictions.tolist(), result, data.collect(), traceability_info)
+        postgres_saver.save_to_postgres(
+            run_id,
+            timestamp,
+            predictions.tolist(),
+            result,
+            data.collect(),
+            traceability_info,
+        )
         logger.log_run_info(
             run_id=run_id,
             timestamp=timestamp,
             predictions=Converter.convert_keys(predictions.tolist()),
             result=Converter.convert_keys(result),
             data=Converter.convert_keys(data.collect()),
-            mlflow_info=Converter.convert_keys(traceability_info)
+            mlflow_info=Converter.convert_keys(traceability_info),
         )
 
-        return { "predictions": predictions,"summary": result}
+        return {"predictions": predictions, "summary": result}
 
     except Exception as error:
         logger.log_failure(error=error)
@@ -45,14 +56,15 @@ def score() -> dict:
     finally:
         traceability.end_run()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     result: dict = score()
     sys.stdout.write(str(result))
- 
-    #print("Spark UI disponível. Pressione Ctrl+C para sair.")
-    #try:
+
+    # print("Spark UI disponível. Pressione Ctrl+C para sair.")
+    # try:
     #    while True:
     #        time.sleep(1)
-    #except KeyboardInterrupt:
+    # except KeyboardInterrupt:
     #    print("Encerrando SparkContext...")
     #    spark_engine.stop_spark_session()

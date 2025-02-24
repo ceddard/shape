@@ -3,6 +3,7 @@ from mlflow.models import infer_signature
 from traceability.schema import TraceabilitySchema
 from typing import Dict, Any
 
+
 class MLflowTraceability(TraceabilitySchema):
     def start_run(self) -> str:
         try:
@@ -53,7 +54,7 @@ class MLflowTraceability(TraceabilitySchema):
                 "run_id": mlflow.active_run().info.run_id,
                 "params": mlflow.active_run().data.params,
                 "metrics": mlflow.active_run().data.metrics,
-                "tags": mlflow.active_run().data.tags
+                "tags": mlflow.active_run().data.tags,
             }
             return run_info
         except Exception as e:

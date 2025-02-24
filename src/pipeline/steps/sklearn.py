@@ -1,10 +1,16 @@
-from sklearn.preprocessing import PolynomialFeatures, QuantileTransformer, StandardScaler
+from sklearn.preprocessing import (
+    PolynomialFeatures,
+    QuantileTransformer,
+    StandardScaler,
+)
 from pipeline.steps.schemas import StepStrategy
 from typing import Tuple
 
+
 class ReduceDimStrategy(StepStrategy):
     def apply(self, step_config: dict) -> Tuple[str, PolynomialFeatures]:
-        return ('reduce_dim', PolynomialFeatures(**step_config["PolynomialFeatures"]))
+        return ("reduce_dim", PolynomialFeatures(**step_config["PolynomialFeatures"]))
+
 
 class QTransfStrategy(StepStrategy):
     def apply(self, step_config: dict) -> Tuple[str, QuantileTransformer]:
@@ -13,12 +19,14 @@ class QTransfStrategy(StepStrategy):
         n_samples = step_config.get("n_samples", 5)
         n_quantiles = min(n_quantiles, n_samples)
         quantile_config["n_quantiles"] = n_quantiles
-        return ('qtransf', QuantileTransformer(**quantile_config))
+        return ("qtransf", QuantileTransformer(**quantile_config))
+
 
 class PolyFeatureStrategy(StepStrategy):
     def apply(self, step_config: dict) -> Tuple[str, PolynomialFeatures]:
-        return ('poly_feature', PolynomialFeatures(**step_config["PolynomialFeatures"]))
+        return ("poly_feature", PolynomialFeatures(**step_config["PolynomialFeatures"]))
+
 
 class StdScalerStrategy(StepStrategy):
     def apply(self, step_config: dict) -> Tuple[str, StandardScaler]:
-        return ('stdscaler', StandardScaler(**step_config["StandardScaler"]))
+        return ("stdscaler", StandardScaler(**step_config["StandardScaler"]))

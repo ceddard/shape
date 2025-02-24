@@ -2,6 +2,7 @@ import datetime
 import numpy as np
 from typing import Any, Dict, List, Union
 
+
 class Converter:
     @staticmethod
     def convert_np_generic(obj: np.generic) -> Any:
@@ -30,7 +31,7 @@ class Converter:
         set: convert_set_tuple,
         tuple: convert_set_tuple,
         dict: convert_dict,
-        list: convert_list
+        list: convert_list,
     }
 
     @staticmethod
