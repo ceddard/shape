@@ -24,3 +24,7 @@ class TraceabilitySchema(ABC):
     @abstractmethod
     def get_run_info(self):
         pass
+
+    @abstractmethod
+    def log_artifact(self, artifact_path):
+        pass

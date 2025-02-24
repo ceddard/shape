@@ -18,3 +18,6 @@ class DVCTraceability(Traceability):
 
     def get_run_info(self):
         raise NotImplementedError("get_run_info method is not implemented for DVCTraceability")
+    
+    def log_artifact(self, artifact_path):
+        raise NotImplementedError("log_artifact method is not implemented for DVCTraceability")

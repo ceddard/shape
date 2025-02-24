@@ -49,7 +49,7 @@ def score():
             "summary": result
         }
     except Exception as error:
-        logger.log_failure(str(error))
+        logger.log_failure(error=error)
         raise PipelineFailed(error)
     finally:
         traceability.end_run()

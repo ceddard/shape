@@ -36,6 +36,13 @@ class MLflowTraceability(TraceabilitySchema):
         except Exception as e:
             raise RuntimeError(f"Failed to log MLflow model: {str(e)}")
 
+    def log_artifact(self, artifact_dict):
+        try:
+            for address, file_path in artifact_dict.items():
+                mlflow.log_artifact(file_path, artifact_path=address)
+        except Exception as e:
+            raise RuntimeError(f"Failed to log MLflow artifact: {str(e)}")
+
     @staticmethod
     def get_run_info():
         try:

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SPARK_UI_PORT: str
     LOGS_DIR: str
     METRICS_FILE_NAME: str
+    ARTIFACT: str
 
     class Config:
         env_file = ".env"
