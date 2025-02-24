@@ -2,8 +2,8 @@ import datetime
 from kafka import KafkaProducer
 
 class Logger:
-    def log_failure(self, e):
-        raise NotImplementedError()
+    def log_failure(self, error):
+        raise NotImplementedError(error) #todo: resolver
 
 class KafkaLogger(Logger):
     def __init__(self):

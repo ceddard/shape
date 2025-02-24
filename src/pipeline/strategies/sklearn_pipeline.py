@@ -13,7 +13,7 @@ class SklearnPipelineStrategy(PipelineStrategy):
             "stdscaler": StdScalerStrategy()
         }
 
-    def fit_transform(self, data, **fit_params):
+    def fit_transform(self, features, **fit_params):
         step_config = fit_params.pop('step_config', {})
         steps = self.pipeline_spec["steps"]
         pipeline_steps = []
@@ -24,9 +24,9 @@ class SklearnPipelineStrategy(PipelineStrategy):
                 pipeline_steps.append(strategy.apply(step_config))
         
         pipeline = Pipeline(pipeline_steps)
-        transformed_data = pipeline.fit_transform(data)
+        transformed_data = pipeline.fit_transform(features)
 
-        expected_num_features = 66  # Expected number of features by the model
+        expected_num_features = 66
         if transformed_data.shape[1] != expected_num_features:
             sys.stdout.write(f"Expected {expected_num_features} features, but got {transformed_data.shape[1]}")
         

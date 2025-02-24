@@ -1,5 +1,4 @@
 import json
-
 from .strategies.sklearn_pipeline import SklearnPipelineStrategy
 from .strategies.sparkml_pipeline import SparkMLPipelineStrategy
 
