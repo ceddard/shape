@@ -1,24 +1,35 @@
 import datetime
 from kafka import KafkaProducer
+from config import settings
+import json
+from logger.schema import Logger
+from utils import Converter
 
-class Logger:
-    def log_failure(self, error):
-        raise NotImplementedError(error) #todo: resolver
-
-class KafkaLogger(Logger):
+class Logger(Logger):
     def __init__(self):
-        self.KAFKA_TOPIC = 'pipeline_logs'
-        self.KAFKA_SERVER = 'localhost:9092'
-        self.producer = KafkaProducer(bootstrap_servers=self.KAFKA_SERVER)
+        self.producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)
+        self.topic = settings.KAFKA_TOPIC
 
-        log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
-        self.producer.send(self.KAFKA_TOPIC, log_message.encode('utf-8'))
+    def __send_message(self, message):
+        self.producer.send(self.topic, message.encode('utf-8'))
 
-class FileLogger(Logger):
-    def __init__(self):
-        self.LOG_DUMP_PATH = 'logs/failure.log'
+    def log_failure(self, **kwargs):
+        error = kwargs.get('error')
+        log_message = f'{datetime.datetime.now()} - Failure: {str(error)}\n' #TODO: implementar funcao de hora aqui
+        self.__send_message(log_message)
 
-    def log_failure(self, e):
-        log_message = f'{datetime.datetime.now()} - Failure: {str(e)}\n'
-        with open(self.LOG_DUMP_PATH, 'a') as fLog:
-            fLog.write(log_message)
+    def log_run_info(self, **kwargs):
+        message = {
+            "run_id": kwargs.get('run_id'),
+            "timestamp": kwargs.get('timestamp'),
+            "predictions": kwargs.get('predictions'),
+            "result": kwargs.get('result'),
+            "data": kwargs.get('data'),
+            "mlflow_info": kwargs.get('mlflow_info')
+        }
+        self.__send_message(json.dumps(Converter.convert_keys(message)))  # Use convert_keys here
+
+    def log_success(self, **kwargs):
+        message = kwargs.get('message')
+        success_message = f'{datetime.datetime.now()} - Success: {message}\n'
+        self.__send_message(success_message)
