@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Logger(ABC):
+class LogSchema(ABC):
     @abstractmethod
     def log_failure(self, **kwargs):
         pass

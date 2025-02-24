@@ -2,10 +2,10 @@ import datetime
 from kafka import KafkaProducer
 from config import settings
 import json
-from logger.schema import Logger
+from logger.schema import LogSchema
 from utils import Converter
 
-class Logger(Logger):
+class Logger(LogSchema):
     def __init__(self):
         self.producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)
         self.topic = settings.KAFKA_TOPIC
