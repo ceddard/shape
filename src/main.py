@@ -26,8 +26,7 @@ def score():
 
         TraceabilityLogger.log_traceability_info(traceability, pipeline_handler, metrics, data)
 
-        success_message = 'Model scored successfully'
-        logger.log_success(message=success_message)
+        logger.log_success(message='Model scored successfully')
 
         metrics_file_path = os.path.join('logs', 'metrics.json')
         save_metrics_to_json(metrics, metrics_file_path)
@@ -50,14 +49,14 @@ def score():
             "summary": result
         }
     except Exception as error:
-        logger.log_failure(str(error))  # Convert error to string
+        logger.log_failure(str(error))
         raise PipelineFailed(error)
     finally:
         traceability.end_run()
 
 if __name__ == '__main__':
     result = score()
-    sys.stdout.write(str(result))  # Convert result to string
+    sys.stdout.write(str(result))
     
     #if result:
     #    print("Predictions:", result["predictions"])
