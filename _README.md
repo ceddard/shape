@@ -322,5 +322,8 @@ Kafka: Sistema de mensagens distribuído usado para logging.
 PostgreSQL: Banco de dados relacional.
 Pipenv: Gerenciador de ambientes virtuais e dependências para Python.
 
-
+porque tanto codigo?
+se a vida
+nao e programada
+e nem tem logica
 
