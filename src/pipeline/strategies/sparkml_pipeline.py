@@ -2,9 +2,10 @@ from .schemas import PipelineStrategy
 import sys
 from pyspark.ml import Pipeline
 from pipeline.steps.sparkml import ReduceDimStrategy, QTransfStrategy, PolyFeatureStrategy, StdScalerStrategy
+from pyspark.sql import DataFrame
 
 class SparkMLPipelineStrategy(PipelineStrategy):
-    def __init__(self, pipeline_spec):
+    def __init__(self, pipeline_spec: dict):
         self.pipeline_spec = pipeline_spec
         self.strategies = {
             "reduce_dim": ReduceDimStrategy(),
@@ -13,7 +14,7 @@ class SparkMLPipelineStrategy(PipelineStrategy):
             "stdscaler": StdScalerStrategy()
         }
 
-    def fit_transform(self, df, **fit_params):
+    def fit_transform(self, df: DataFrame, **fit_params: dict) -> DataFrame:
         step_config = fit_params.pop('step_config', {})
         steps = self.pipeline_spec["steps"]
         pipeline_stages = []

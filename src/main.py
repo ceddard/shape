@@ -8,25 +8,24 @@ from traceability import traceability
 from pipeline.pipeline import PipelineHandler
 from traceability.traceability_recorder import TraceabilityLogger
 from exceptions import PipelineFailed
-from config import settings
 
 
-def score():
+def score() -> dict:
     try:
-        run_id = traceability.start_run()
-        timestamp = get_current_timestamp()
+        run_id: str = traceability.start_run()
+        timestamp: str = get_current_timestamp()
         
-        pipeline_handler = PipelineHandler()
+        pipeline_handler: PipelineHandler = PipelineHandler()
         predictions, metrics, result, data = pipeline_handler.get_predictions_and_metrics()
 
         TraceabilityLogger.log_traceability_info(traceability, pipeline_handler, metrics, data)
 
         logger.log_success(message='Model scored successfully')
 
-        metrics_file_path = os.path.join('logs', 'metrics.json')
+        metrics_file_path: str = os.path.join('logs', 'metrics.json')
         save_metrics_to_json(metrics, metrics_file_path)
 
-        traceability_info = traceability.get_run_info()
+        traceability_info: dict = traceability.get_run_info()
 
         postgres_saver.save_to_postgres(run_id, timestamp, predictions.tolist(), result, data.collect(), traceability_info)
         logger.log_run_info(
@@ -47,7 +46,7 @@ def score():
         traceability.end_run()
 
 if __name__ == '__main__':
-    result = score()
+    result: dict = score()
     sys.stdout.write(str(result))
  
     #print("Spark UI disponível. Pressione Ctrl+C para sair.")

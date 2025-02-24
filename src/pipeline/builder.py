@@ -1,19 +1,20 @@
 import json
 from .strategies.sklearn_pipeline import SklearnPipelineStrategy
 from .strategies.sparkml_pipeline import SparkMLPipelineStrategy
+from .schemas import PipelineStrategy
 
 class PipelineBuilder:
-    def __init__(self, file_path, framework):
+    def __init__(self, file_path: str, framework: str):
         self.file_path = file_path
         self.framework = framework
 
-    def get_pipeline(self):
+    def get_pipeline(self) -> dict:
         with open(self.file_path, 'r') as f:
             str_json = '\n'.join(f.readlines()[3:])
         
         return json.loads(str_json) # rever esta logica
 
-    def create_pipeline_strategy(self):
+    def create_pipeline_strategy(self) -> PipelineStrategy:
         pipeline_spec = self.get_pipeline()
         strategy_map = {
             'sklearn': SklearnPipelineStrategy,

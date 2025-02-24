@@ -7,29 +7,29 @@ from pyspark.sql import SparkSession, DataFrame as PySparkDataFrame
 # revisor, calma que isso e apenas o escopo do esperado :D
 spark = SparkSession.builder.appName("test").getOrCreate()
 
-def test_load_data():
+def test_load_data() -> None:
     data = load('data')
     assert data is not None
     assert isinstance(data, PySparkDataFrame)
     assert not data.rdd.isEmpty()
     assert 'vibration_x' in data.columns
 
-def test_load_model():
+def test_load_model() -> None:
     model = load('model')
     assert model is not None
     assert hasattr(model, 'predict')
     assert hasattr(model, 'score')
 
-def test_load_pipeline():
+def test_load_pipeline() -> None:
     pipeline = load_pipeline('artifacts/pipeline.jsonc')
     assert pipeline is not None
     assert isinstance(pipeline, Pipeline)
 
-def test_score():
+def test_score() -> None:
     result = score()
     assert result is not None
     assert isinstance(result, np.ndarray)
 
-def test_load_invalid_type():
+def test_load_invalid_type() -> None:
     with pytest.raises(ValueError):
         load('invalid_type')

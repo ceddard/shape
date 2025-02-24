@@ -1,8 +1,9 @@
 from config import settings
+from typing import Any, Dict
 
 class TraceabilityLogger:
     @staticmethod
-    def log_traceability_info(traceability, pipeline_handler, metrics, data):
+    def log_traceability_info(traceability: Any, pipeline_handler: Any, metrics: Dict[str, Any], data: Any) -> None:
         traceability.log_params({
             "data_shape": metrics["data_shape"],
             "transformed_data_shape": metrics["transformed_data_shape"]

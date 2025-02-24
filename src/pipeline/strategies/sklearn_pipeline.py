@@ -2,9 +2,10 @@ from .schemas import PipelineStrategy
 import sys
 from sklearn.pipeline import Pipeline
 from pipeline.steps.sklearn import ReduceDimStrategy, QTransfStrategy, PolyFeatureStrategy, StdScalerStrategy
+from typing import Any
 
 class SklearnPipelineStrategy(PipelineStrategy):
-    def __init__(self, pipeline_spec):
+    def __init__(self, pipeline_spec: dict):
         self.pipeline_spec = pipeline_spec
         self.strategies = {
             "reduce_dim": ReduceDimStrategy(),
@@ -13,7 +14,7 @@ class SklearnPipelineStrategy(PipelineStrategy):
             "stdscaler": StdScalerStrategy()
         }
 
-    def fit_transform(self, features, **fit_params):
+    def fit_transform(self, features: Any, **fit_params) -> Any:
         step_config = fit_params.pop('step_config', {})
         steps = self.pipeline_spec["steps"]
         pipeline_steps = []
