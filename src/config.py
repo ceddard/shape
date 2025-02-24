@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     class Settings(BaseSettings):
     for defining the environment variables required for the application.
     """
+
     PIPELINE_FILE_PATH: str
     DATA_FILE_PATH: str
     KAFKA_TOPIC: str

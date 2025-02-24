@@ -7,12 +7,13 @@ class SparkEngine:
     """
     Singleton class for managing a Spark Session.
     """
-    
+
     _instance = None
 
     def __new__(cls) -> "SparkEngine":
         """
-        Create a new instance of the SparkEngine class if one does not already exist.
+        Create a new instance of the SparkEngine class if one does
+            not already exist.
 
         Returns:
             SparkEngine: Singleton instance of the SparkEngine class.
@@ -33,7 +34,7 @@ class SparkEngine:
     def spark(self) -> SparkSession:
         """
         Get the Spark Session instance.
-        
+
         Returns:
             SparkSession: The Spark Session instance.
         """
@@ -44,12 +45,13 @@ class SparkEngine:
     def create_spark_session(self) -> SparkSession:
         """
         Create a new Spark Session instance.
-        
+
         Returns:
             SparkSession: The new Spark Session instance.
-        
+
         Raises:
-            SparkInitializationError: If an error occurs while initializing the Spark Session.
+            SparkInitializationError: If an error occurs while
+                initializing the Spark Session.
         """
         try:
             spark = (
@@ -58,7 +60,8 @@ class SparkEngine:
                 .getOrCreate()
             )
             if not spark:
-                raise SparkInitializationError("Failed to initialize Spark Session")
+                raise SparkInitializationError(
+                    "Failed to initialize Spark Session")
         except Exception as e:
             raise SparkInitializationError(
                 f"Error initializing Spark Session: {str(e)}"

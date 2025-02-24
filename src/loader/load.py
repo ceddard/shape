@@ -10,6 +10,7 @@ class Load:
     """
     Load class for loading data and models.
     """
+
     def __init__(self) -> None:
         """
         Initialize the Load class with data and model file paths.
@@ -21,7 +22,7 @@ class Load:
     def data(self) -> DataFrame:
         """
         Load the data from the data file path.
-        
+
         return: DataFrame: The loaded data.
         """
         df = spark.read.parquet(self.data_file_path)
@@ -31,7 +32,7 @@ class Load:
     def model(self) -> Any:
         """
         Load the model from the model file path.
-        
+
         return: Any: The loaded model object.
         """
         with open(self.model_file_path, "r") as f:
@@ -43,9 +44,9 @@ class Load:
     def pipeline(self) -> Any:
         """
         Load the pipeline from the model file path.
-        
+
         return: Any: The loaded pipeline object.
-        
+
         Note: This method is not implemented yet.
         """
         raise NotImplementedError()

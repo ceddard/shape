@@ -13,11 +13,14 @@ from exceptions import PipelineFailed
 def score() -> dict:
     """
     Score the model and save the results to the database.
-    
-    in future this function will be replaced by a pipeline that will be responsible for the entire process of scoring the model.
-    this function is just a temporary solution to demonstrate the use of the pipeline.
-    docker is not yet configured to run the pipeline, so this function is being used to demonstrate the use of the pipeline.
-    in future this function can be triggered by another pipeline or a cron job, like control-m, for example.
+
+    in future this function will be replaced by a pipeline that will be
+    responsible for the entire process of scoring the model. this function
+    is just a temporary solution to demonstrate the use of the pipeline.
+    docker is not yet configured to run the pipeline, so this function is
+    being used to demonstrate the use of the pipeline. In future this function
+    can be triggered by another pipeline or a cron job,
+    like control-m, for example.
     """
     try:
         run_id: str = traceability.start_run()

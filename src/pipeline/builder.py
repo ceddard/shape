@@ -6,12 +6,15 @@ from .strategies.schemas import PipelineStrategy
 
 class PipelineBuilder:
     """
-    PipelineBuilder class for creating a pipeline strategy based on a JSON pipeline specification.
+    PipelineBuilder class for creating a pipeline strategy based on
+        a JSON pipeline specification.
     """
+
     def __init__(self, file_path: str, framework: str):
         """
-        Initialize the PipelineBuilder with the file path to the pipeline specification and the framework type.
-        
+        Initialize the PipelineBuilder with the file path to the pipeline
+            specification and the framework type.
+
         Args:
             file_path (str): The path to the pipeline specification JSON file.
             framework (str): The type of framework to use for the pipeline.
@@ -22,19 +25,19 @@ class PipelineBuilder:
     def get_pipeline(self) -> dict:
         """
         Get the pipeline specification from the JSON file.
-        
+
         Returns:
             dict: The pipeline specification.
         """
         with open(self.file_path, "r") as f:
             str_json = "\n".join(f.readlines()[3:])
 
-        return json.loads(str_json)  # rever esta logica
+        return json.loads(str_json)
 
     def create_pipeline_strategy(self) -> PipelineStrategy:
         """
         Create a pipeline strategy based on the framework type.
-        
+
         Returns:
             PipelineStrategy: The pipeline strategy object.
         """

@@ -6,6 +6,7 @@ class TraceabilitySchema(ABC):
     Abstract class for traceability schema
     methods must be implemented by the subclasses
     """
+
     @abstractmethod
     def start_run(self):
         pass

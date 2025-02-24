@@ -14,14 +14,15 @@ class SparkMLPipelineStrategy(PipelineStrategy):
     """
     A strategy for applying a SparkML pipeline to a DataFrame.
     """
+
     def __init__(self, pipeline_spec: dict):
         """
         Initialize the SparkMLPipelineStrategy with the pipeline specification.
-        
+
         Args:
             pipeline_spec (dict): The pipeline specification.
         """
-        
+
         self.pipeline_spec = pipeline_spec
         self.strategies = {
             "reduce_dim": ReduceDimStrategy(),
@@ -33,15 +34,16 @@ class SparkMLPipelineStrategy(PipelineStrategy):
     def fit_transform(self, df: DataFrame, **fit_params: dict) -> DataFrame:
         """
         Fit the pipeline to the DataFrame and transform the DataFrame.
-        
+
         Args:
             df (DataFrame): The DataFrame to transform.
-            **fit_params: Arbitrary keyword arguments containing fit parameters.
-            
+            **fit_params: Arbitrary keyword arguments
+            containing fit parameters.
+
         Returns:
             DataFrame: The transformed DataFrame.
         """
-        
+
         step_config = fit_params.pop("step_config", {})
         steps = self.pipeline_spec["steps"]
         pipeline_stages = []
@@ -62,7 +64,10 @@ class SparkMLPipelineStrategy(PipelineStrategy):
             != expected_num_features
         ):
             sys.stdout.write(
-                f"Transformed data has {transformed_data.select('features').head().features.size} features, but the model expects {expected_num_features} features."
+                f"Transformed data has "
+                f"{transformed_data.select('features').head().features.size} "
+                f"features, but the model expects {expected_num_features}"
+                f"features."
             )
 
         return transformed_data

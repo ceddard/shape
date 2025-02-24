@@ -9,6 +9,7 @@ class Postgres:
     """
     Postgres class for saving run information to a Postgres database.
     """
+
     def __init__(
         self, dbname: str, user: str, password: str, host: str, port: int
     ) -> None:

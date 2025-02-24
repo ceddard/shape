@@ -10,10 +10,11 @@ class MLflowTraceability(TraceabilitySchema):
     MLflowTraceability class for logging
     model training information to MLflow.
     """
+
     def start_run(self) -> str:
         """
         Start an MLflow run.
-        
+
         Returns:
             str: The run ID of the started MLflow run.
 
@@ -42,10 +43,10 @@ class MLflowTraceability(TraceabilitySchema):
     def log_params(self, params: Dict[str, Any]) -> None:
         """
         Log parameters to the active MLflow run.
-        
+
         Args:
             params (Dict[str, Any]): The parameters to log.
-            
+
         raises:
             RuntimeFailed: If logging the MLflow params fails.
         """
@@ -58,10 +59,10 @@ class MLflowTraceability(TraceabilitySchema):
     def log_metrics(self, metrics: Dict[str, float]) -> None:
         """
         Log metrics to the active MLflow run.
-        
+
         Args:
             metrics (Dict[str, float]): The metrics to log.
-            
+
         raises:
             RuntimeFailed: If logging the MLflow metrics fails.
         """
@@ -74,11 +75,11 @@ class MLflowTraceability(TraceabilitySchema):
     def log_model(self, model: Any, input_example: Any) -> None:
         """
         Log the model to the active MLflow run.
-        
+
         Args:
             model (Any): The model to log.
             input_example (Any): An example input to infer the model signature.
-            
+
         raises:
             RuntimeFailed: If logging the MLflow model fails.
         """
@@ -91,7 +92,7 @@ class MLflowTraceability(TraceabilitySchema):
     def log_artifact(self, artifact_dict: Dict[str, str]) -> None:
         """
         Log artifacts to the active MLflow run.
-        
+
         Args:
             artifact_dict (Dict[str, str]): The artifacts to log.
 
@@ -108,10 +109,10 @@ class MLflowTraceability(TraceabilitySchema):
     def get_run_info() -> Dict[str, Any]:
         """
         Get information about the active MLflow run.
-        
+
         Returns:
             Dict[str, Any]: The run information.
-            
+
         raises:
             RuntimeFailed: If getting the MLflow run info fails.
         """
