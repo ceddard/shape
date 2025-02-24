@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PORT: str
     PIPELINE_FRAMEWORK: str
+    TRACE_ENGINE: str
 
     class Config:
         env_file = ".env"
