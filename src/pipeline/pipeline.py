@@ -3,7 +3,7 @@ from loader.load import Load
 from pipeline.builder import PipelineBuilder
 from config import settings
 from pyspark.ml.feature import VectorAssembler
-from typing import Tuple, Any, List, Dict
+from typing import Tuple, Any, Dict
 from pyspark.sql import DataFrame
 
 
