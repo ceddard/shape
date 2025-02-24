@@ -1,4 +1,5 @@
 import mlflow
+from mlflow.models import infer_signature
 from traceability.schema import TraceabilitySchema
 
 class MLflowTraceability(TraceabilitySchema):
@@ -32,7 +33,8 @@ class MLflowTraceability(TraceabilitySchema):
 
     def log_model(self, model, input_example):
         try:
-            mlflow.sklearn.log_model(model, "model", input_example=input_example)
+            signature = infer_signature(input_example)
+            mlflow.sklearn.log_model(model, "model", signature=signature)
         except Exception as e:
             raise RuntimeError(f"Failed to log MLflow model: {str(e)}")
 

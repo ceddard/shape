@@ -13,6 +13,6 @@ class TraceabilityLogger:
         traceability.log_artifact({
             "model": settings.ARTIFACT})
 
-        input_example = data[:5]
+        input_example = data.limit(5).collect()
         transformed_input_example = pipeline_handler.pipeline.fit_transform(input_example)
         traceability.log_model(pipeline_handler.load.model, transformed_input_example)

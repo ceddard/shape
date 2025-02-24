@@ -1,7 +1,7 @@
-import dask.dataframe as dd
 import pickle
 import json
 from config import settings
+from engine import spark
 
 class Load:
     def __init__(self):
@@ -10,8 +10,8 @@ class Load:
 
     @property
     def data(self):
-        df = dd.read_parquet(self.data_file_path)
-        return df.compute().to_numpy()
+        df = spark.read.parquet(self.data_file_path)
+        return df
 
     @property
     def model(self):

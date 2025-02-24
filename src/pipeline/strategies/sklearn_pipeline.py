@@ -1,4 +1,5 @@
 from .schemas import PipelineStrategy
+import sys
 from sklearn.pipeline import Pipeline
 from pipeline.steps.sklearn import ReduceDimStrategy, QTransfStrategy, PolyFeatureStrategy, StdScalerStrategy
 
@@ -12,7 +13,8 @@ class SklearnPipelineStrategy(PipelineStrategy):
             "stdscaler": StdScalerStrategy()
         }
 
-    def fit_transform(self, data):
+    def fit_transform(self, data, **fit_params):
+        step_config = fit_params.pop('step_config', {})
         steps = self.pipeline_spec["steps"]
         pipeline_steps = []
         
@@ -22,4 +24,10 @@ class SklearnPipelineStrategy(PipelineStrategy):
                 pipeline_steps.append(strategy.apply(step_config))
         
         pipeline = Pipeline(pipeline_steps)
-        return pipeline.fit_transform(data)
+        transformed_data = pipeline.fit_transform(data)
+
+        expected_num_features = 66  # Expected number of features by the model
+        if transformed_data.shape[1] != expected_num_features:
+            sys.stdout.write(f"Expected {expected_num_features} features, but got {transformed_data.shape[1]}")
+        
+        return transformed_data
