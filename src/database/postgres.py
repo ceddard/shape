@@ -10,7 +10,7 @@ class Postgres:
         self.host = host
         self.port = port
 
-    def save_to_postgres(self, run_id, timestamp, predictions, summary, mlflow_info):
+    def save_to_postgres(self, run_id, timestamp, predictions, summary, mlflow_info, log_info):
         conn = psycopg2.connect(
             dbname=self.dbname,
             user=self.user,
@@ -22,7 +22,10 @@ class Postgres:
         
         summary_conv = convert_keys(summary)
         mlflow_info_conv = convert_keys(mlflow_info)
-        
+        log_info_conv = "1" if log_info else "0"
+
+        predictions_json = json.dumps(predictions)
+
         insert_query = """
         INSERT INTO pipeline (run_id, timestamp, predictions, summary, traceability, log_status)
         VALUES (%s, %s, %s, %s, %s, %s)
@@ -30,10 +33,10 @@ class Postgres:
         cursor.execute(insert_query, (
             [run_id],
             timestamp,
-            json.dumps(predictions),
+            predictions_json,
             json.dumps(summary_conv),
             json.dumps(mlflow_info_conv),
-            [json.dumps("")]
+            [log_info_conv]
         ))
         
         conn.commit()

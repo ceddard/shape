@@ -2,10 +2,10 @@ import datetime
 from kafka import KafkaProducer
 from config import settings
 import json
-from logger.base_logger import Logger
+from logger.schema import Logger
 from utils import convert_keys  # Import the convert_keys function
 
-class KafkaFacade(Logger):
+class Logger(Logger):
     def __init__(self):
         self.producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)
         self.topic = settings.KAFKA_TOPIC
@@ -15,7 +15,7 @@ class KafkaFacade(Logger):
 
     def log_failure(self, **kwargs):
         error = kwargs.get('error')
-        log_message = f'{datetime.datetime.now()} - Failure: {str(error)}\n'
+        log_message = f'{datetime.datetime.now()} - Failure: {str(error)}\n' #TODO: implementar funcao de hora aqui
         self.__send_message(log_message)
 
     def log_run_info(self, **kwargs):
