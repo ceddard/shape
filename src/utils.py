@@ -1,51 +1,44 @@
-import json
 import datetime
 import numpy as np
-import psycopg2
 
-def save_metrics_to_json(metrics: dict, file_path: str):
-    with open(file_path, 'w') as f:
-        json.dump(metrics, f)
-
-def convert_keys(obj):
-    if isinstance(obj, np.generic):
+class Converter:
+    @staticmethod
+    def convert_np_generic(obj):
         return obj.item()
-    if isinstance(obj, (datetime.datetime, datetime.date)):
-        return obj.isoformat()
-    if isinstance(obj, (set, tuple)):
-        return list(obj)
-    if isinstance(obj, dict):
-        return {str(k): convert_keys(v) for k, v in obj.items()}
-    if isinstance(obj, list):
-        return [convert_keys(item) for item in obj]
-    return obj
 
-def save_to_postgres(run_id, timestamp, predictions, summary, input_data, mlflow_info):
-    conn = psycopg2.connect(
-        dbname="postgres",
-        user="postgres",
-        password="123",
-        host="localhost",
-        port="5432"
-    )
-    cursor = conn.cursor()
-    
-    summary_conv = convert_keys(summary)
-    mlflow_info_conv = convert_keys(mlflow_info)
-    
-    insert_query = """
-    INSERT INTO pipeline (run_id, timestamp, predictions, summary, traceability, log_status)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(insert_query, (
-        [run_id],
-        timestamp,
-        json.dumps(predictions),
-        json.dumps(summary_conv),
-        json.dumps(mlflow_info_conv),
-        [json.dumps("")]
-    ))
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
+    @staticmethod
+    def convert_datetime(obj):
+        return obj.isoformat()
+
+    @staticmethod
+    def convert_set_tuple(obj):
+        return list(obj)
+
+    @staticmethod
+    def convert_dict(obj):
+        return {str(k): Converter.convert_keys(v) for k, v in obj.items()}
+
+    @staticmethod
+    def convert_list(obj):
+        return [Converter.convert_keys(item) for item in obj]
+
+    dispatch_table = {
+        np.generic: convert_np_generic,
+        datetime.datetime: convert_datetime,
+        datetime.date: convert_datetime,
+        set: convert_set_tuple,
+        tuple: convert_set_tuple,
+        dict: convert_dict,
+        list: convert_list
+    }
+
+    @staticmethod
+    def convert_keys(obj):
+        for key, func in Converter.dispatch_table.items():
+            if isinstance(obj, key):
+                return func(obj)
+        return obj
+
+
+def get_current_timestamp():
+    return str(datetime.datetime.now().isoformat())
