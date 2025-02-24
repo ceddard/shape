@@ -6,9 +6,15 @@ from .config import INSERT_QUERY
 
 
 class Postgres:
+    """
+    Postgres class for saving run information to a Postgres database.
+    """
     def __init__(
         self, dbname: str, user: str, password: str, host: str, port: int
     ) -> None:
+        """
+        Initialize the Postgres class with database connection settings.
+        """
         self.dbname = dbname
         self.user = user
         self.password = password
@@ -24,6 +30,11 @@ class Postgres:
         mlflow_info: Dict[str, Any],
         log_info: bool,
     ) -> None:
+        """
+        Save run information to a Postgres database.
+        informations: run_id, timestamp, predictions, summary, mlflow_info,
+        and log_info to the database.
+        """
         conn = psycopg2.connect(
             dbname=self.dbname,
             user=self.user,
