@@ -3,10 +3,22 @@ from typing import Any, Dict
 
 
 class TraceabilityLogger:
+    """
+    TraceabilityLogger class for logging
+    """
     @staticmethod
     def log_traceability_info(
         traceability: Any, pipeline_handler: Any, metrics: Dict[str, Any], data: Any
     ) -> None:
+        """
+        Log traceability information.
+        
+        Args:
+            traceability (Any): The traceability object.
+            pipeline_handler (Any): The pipeline handler object.
+            metrics (Dict[str, Any]): The metrics information.
+            data (Any): The data object.
+        """
         traceability.log_params(
             {
                 "data_shape": metrics["data_shape"],

@@ -27,4 +27,12 @@ class PipelineFailed(Exception):
         super().__init__(f"Pipeline failed: {error}")
 
 
+class RuntimeFailed(RuntimeError):
+    """
+    Custom runtime error for handling specific runtime exceptions.
+    """
+    def __init__(self, message):
+        super().__init__(message)
+
+
 # todo: verifique se e necesario self.var = var nas classes

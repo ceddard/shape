@@ -2,6 +2,12 @@ from traceability.schema import Traceability
 
 
 class DVCTraceability(Traceability):
+    """
+    DVCTraceability class for logging
+    model training information to DVC.
+    
+    not implemented yet.
+    """
     def start_run(self):
         raise NotImplementedError(
             "start_run method is not implemented for DVCTraceability"

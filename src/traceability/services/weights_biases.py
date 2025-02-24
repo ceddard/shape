@@ -2,6 +2,12 @@ from traceability.schema import Traceability
 
 
 class WeightsBiasesTraceability(Traceability):
+    """
+    WeightsBiasesTraceability class for logging
+    model training information to Weights & Biases.
+    
+    not implemented yet.
+    """
     def start_run(self):
         raise NotImplementedError(
             "start_run method is not implemented for WeightsBiasesTraceability"
