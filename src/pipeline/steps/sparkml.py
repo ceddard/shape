@@ -2,6 +2,9 @@ from pyspark.ml.feature import PolynomialExpansion, QuantileDiscretizer, Standar
 from pipeline.steps.schemas import StepStrategy
 from pyspark.ml.pipeline import PipelineModel
 
+"""
+this method is not used yet, because dont have full support for the pipeline
+"""
 
 class ReduceDimStrategy(StepStrategy):
     def apply(self, step_config: dict) -> PipelineModel:

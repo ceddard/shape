@@ -11,7 +11,15 @@ from typing import Any
 
 
 class SklearnPipelineStrategy(PipelineStrategy):
+    """
+    SklearnPipelineStrategy is a concrete implementation of the PipelineStrategy
+    interface. It is responsible for applying a series of transformations to the
+    input data using the sklearn library.
+    """
     def __init__(self, pipeline_spec: dict):
+        """
+        Initialize the SklearnPipelineStrategy with the pipeline specification.
+        """
         self.pipeline_spec = pipeline_spec
         self.strategies = {
             "reduce_dim": ReduceDimStrategy(),
@@ -21,6 +29,16 @@ class SklearnPipelineStrategy(PipelineStrategy):
         }
 
     def fit_transform(self, features: Any, **fit_params) -> Any:
+        """
+        Fit and transform the input features using the pipeline specification.
+        
+        Args:
+            features (Any): The input features to transform.
+            **fit_params: Arbitrary keyword arguments containing fit parameters.
+            
+        Returns:
+            Any: The transformed features.
+        """
         step_config = fit_params.pop("step_config", {})
         steps = self.pipeline_spec["steps"]
         pipeline_steps = []
