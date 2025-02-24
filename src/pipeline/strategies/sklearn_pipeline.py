@@ -55,16 +55,11 @@ class SklearnPipelineStrategy(PipelineStrategy):
         pipeline = Pipeline(pipeline_stages)
         transformed_data = pipeline.fit_transform(features)
 
-        expected_num_features = 66
-        if (
-            transformed_data.select("features").head().features.size
-            != expected_num_features
-        ):
+        expected_num_features = 66  # default value, can be calculated based on the pipeline_spec
+        if transformed_data.shape[1] != expected_num_features:
             sys.stdout.write(
-                f"Transformed data has "
-                f"{transformed_data.select('features').head().features.size}"
-                f" features, but the model expects {expected_num_features}"
-                f" features."
+                f"Transformed data has {transformed_data.shape[1]} features, "
+                f"but the model expects {expected_num_features} features."
             )
 
         return transformed_data
